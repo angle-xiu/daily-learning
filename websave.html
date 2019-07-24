@@ -1,0 +1,63 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>web存储</title>
+</head>
+
+<body>
+    <p id="result"></p>
+    <div style="border: 2px dashed #ccc;width:320px;text-align:center;">     
+            <label for="sitename">网站名(key)：</label>  
+            <input type="text" id="sitename" name="sitename" class="text"/>  
+            <br/>  
+            <label for="siteurl">网 址(value)：</label>  
+            <input type="text" id="siteurl" name="siteurl"/>  
+            <br/>  
+            <input type="button" onclick="save()" value="新增记录"/>  
+            <hr/>  
+            <label for="search_site">输入网站名：</label>  
+            <input type="text" id="search_site" name="search_site"/>  
+            <input type="button" onclick="find()" value="查找网站"/>  
+            <p id="find_result"><br/></p>  
+        </div>
+    <script>
+        //web储存主要利用Storage对象及IndexedDataBase API(web SQL DB 已废弃)
+        //ps:localStorage是Storage的实例
+        //   globalStorage不是Storage的实例,globalStorage(location.host)才是
+        //   sessionStorage只适合短暂的会话储存而不适合长期的存储，
+        //   长期存储可采用localStorage
+        //判断是否支持
+        if (typeof (Storage) !== "undefined") {
+            console.log("支持");
+        } else {
+            console.log("don't work");
+        }
+        //localStorage储存无时间限制
+        localStorage.sitename = "逗趣";//利用属性保存
+        document.querySelector("#result").innerHTML = `网站名:${localStorage.sitename}`;
+        localStorage.setItem("sitename",1);//利用方法保存
+        localStorage.setItem("sitename2",6);
+        console.log(localStorage.sitename);
+        localStorage.removeItem("sitename");//方法移除，也可利用属性移除
+        console.log(localStorage.sitename);
+        var name = localStorage.key(2);//索引
+        console.log(name);
+        //保存数据  
+        function save() {
+            var siteurl = document.getElementById("siteurl").value;
+            var sitename = document.getElementById("sitename").value;
+            localStorage.setItem(sitename, siteurl);
+            alert("添加成功");
+        }
+        //查找数据  
+        function find() {
+            var search_site = document.getElementById("search_site").value;
+            var sitename = localStorage.getItem(search_site);
+            var find_result = document.getElementById("find_result");
+            find_result.innerHTML = search_site + "的网址是：" + sitename;
+        }
+    </script>
+</body>
+
+</html>
